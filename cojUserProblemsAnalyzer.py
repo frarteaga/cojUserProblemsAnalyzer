@@ -14,6 +14,9 @@ import urllib
 import sys
 
 
+HTMLProfiles = {}
+
+
 def GetUsernameList():
     usernames = sys.argv[1: ]
     return usernames
@@ -33,12 +36,31 @@ def WriteLine(line):
     sys.stdout.flush()
 
 
+def HasProfileHtmlErrors(html):
+    # TODO
+    return False
+
+
+def GetFileContent(fileName):
+    # TODO
+    content = ''
+    return content
+
+
 def DownloadUserProfiles(usernames):
     WriteLine('Downloading user profiles:')
+
     for username in usernames:
         profileUrl = GetUserProfileUrl(username)
+        profileHtmlFileName = username + '.html'
+
         WriteLine(' * Downloading ' + profileUrl)
-        urllib.urlretrieve(profileUrl, username + '.html')
+        urllib.urlretrieve(profileUrl, profileHtmlFileName)
+
+        html = GetFileContent(profileHtmlFileName)
+        if HasProfileHtmlErrors(html):
+            WriteLine('An error occured with ' + profileHtmlFileName + 
+                  '. Make sure the user exist or check you internet connection')
 
 
 def main():
