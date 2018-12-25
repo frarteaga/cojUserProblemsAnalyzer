@@ -28,16 +28,25 @@ def GetUserProfileUrl(username):
     return 'http://coj.uci.cu/user/useraccount.xhtml?username=' + username
 
 
+def WriteLine(line):
+    print line
+    sys.stdout.flush()
+
+
+def DownloadUserProfiles(usernames):
+    WriteLine('Downloading user profiles:')
+    for username in usernames:
+        profileUrl = GetUserProfileUrl(username)
+        WriteLine(' * Downloading ' + profileUrl)
+        urllib.urlretrieve(profileUrl, username + '.html')
+
+
 def main():
     usernames = GetUsernameList()
     if not usernames:
         ExitWithMessage("No username provided", 1)
 
-    print 'Downloading user profiles:'
-    for username in usernames:
-        profileUrl = GetUserProfileUrl(username)
-        print 'Downloading ' + profileUrl
-        urllib.urlretrieve(profileUrl, username + '.html')
+    DownloadUserProfiles(usernames)
 
 
 if __name__ == '__main__':
