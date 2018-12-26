@@ -37,14 +37,20 @@ def WriteLine(line):
 
 
 def HasProfileHtmlErrors(html):
-    # TODO
+    if not html:
+        return True
+    if 'COJ: Profile of' not in html:
+        return True
     return False
 
 
 def GetFileContent(fileName):
-    # TODO
-    content = ''
-    return content
+    try:
+        File = open(fileName, 'r')
+        content = File.read()
+        return content
+    except:
+        return ''
 
 
 def DownloadUserProfiles(usernames):
