@@ -21,11 +21,13 @@ AttemptedProblems = {}
 
 
 class CojUserProfileParser(HTMLParser):
-    accScope = False
-    attemptedScope = False
-    pickProbleId = False
-    ACCProblems = []
-    AttemptedProblems = []
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.accScope = False
+        self.attemptedScope = False
+        self.pickProbleId = False
+        self.ACCProblems = []
+        self.AttemptedProblems = []
 
     def handle_starttag(self, tag, attrs):
         self.pickProbleId = False
@@ -106,6 +108,7 @@ def DownloadUserProfiles(usernames):
                   '. Make sure the user exist or check you internet connection')
         else:
             HTMLProfiles[username] = html
+    WriteLine('')
 
 
 def ExtractProblemListsFrom(htmlProfiles):
@@ -117,6 +120,12 @@ def ExtractProblemListsFrom(htmlProfiles):
         AttemptedProblems[username] = set(parser.AttemptedProblems)
 
         
+def PrintQuantities(usernames):
+    for username in usernames:
+        cACC = len(ACCProblems[username])
+        cAtt = len(AttemptedProblems[username])
+        print username, 'AC:', cACC, 'Failed:', cAtt
+
 
 def main():
     usernames = GetUsernameList()
@@ -125,6 +134,8 @@ def main():
 
     DownloadUserProfiles(usernames)
     ExtractProblemListsFrom(HTMLProfiles)
+    ValidUsernames = HTMLProfiles.keys()
+    PrintQuantities(ValidUsernames)
 
 
 if __name__ == '__main__':
